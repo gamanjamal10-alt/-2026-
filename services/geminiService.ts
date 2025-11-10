@@ -1,16 +1,16 @@
-
-
 import { GoogleGenAI } from "@google/genai";
-// FIX: Corrected import path for types.
 import { Animal, Crop } from './types';
 
+// FIX: The API key must be obtained from `process.env.API_KEY` as per the coding guidelines.
+// This resolves the TypeScript error "Property 'env' does not exist on type 'ImportMeta'".
 const API_KEY = process.env.API_KEY;
 
-if (!API_KEY) {
-  console.warn("API_KEY is not set. AI features will not work.");
+let ai: GoogleGenAI | null = null;
+if (API_KEY) {
+  ai = new GoogleGenAI({ apiKey: API_KEY });
+} else {
+  console.warn("API_KEY is not set. AI features will not work. Please set it in your environment variables.");
 }
-
-const ai = new GoogleGenAI({ apiKey: API_KEY! });
 
 const generatePrompt = (animals: Animal[], crops: Crop[]): string => {
   let prompt = `
@@ -23,7 +23,7 @@ const generatePrompt = (animals: Animal[], crops: Crop[]): string => {
   if (animals.length > 0) {
     prompt += "**الحيوانات:**\n";
     animals.forEach(a => {
-      prompt += `- **${a.name} (${a.type})**: الدور: ${a.role}, الصحة: ${a.healthStatus}, الإنتاج اليومي: ${a.dailyOutput}. ملاحظات: ${a.notes || 'لا يوجد'}\n`;
+      prompt += `- **${a.name} (${a.type} - ${a.class || 'غير مصنف'})**: الدور: ${a.role}, الصحة: ${a.healthStatus}, الإنتاج اليومي: ${a.dailyOutput}. ملاحظات: ${a.notes || 'لا يوجد'}\n`;
     });
   }
 
@@ -52,8 +52,9 @@ const generatePrompt = (animals: Animal[], crops: Crop[]): string => {
 };
 
 export const getFarmRecommendations = async (animals: Animal[], crops: Crop[]): Promise<string> => {
-  if (!API_KEY) {
-    return Promise.resolve("عذراً، خدمة التوصيات الذكية غير متاحة حالياً. يرجى التأكد من إعداد مفتاح API.");
+  if (!ai) {
+    // FIX: Updated the user-facing error message to be more generic and not expose implementation details like environment variable names.
+    return Promise.resolve("عذراً، خدمة التوصيات الذكية غير متاحة حالياً. يرجى التأكد من أن مفتاح API الخاص بالخدمة قد تم إعداده بشكل صحيح.");
   }
   
   try {
