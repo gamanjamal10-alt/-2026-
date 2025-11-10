@@ -1,7 +1,16 @@
 import React, { useState } from 'react';
 import useLocalStorage from './hooks/useLocalStorage';
-import { Animal, AnimalFormData, Crop, CropFormData, Expense, ExpenseFormData, Shepherd, ShepherdFormData, FarmWorker, FarmWorkerFormData, View } from './types';
-import { INITIAL_SHEPHERDS, INITIAL_FARM_WORKERS } from './constants';
+import { 
+  Animal, AnimalFormData, 
+  Crop, CropFormData, 
+  Expense, ExpenseFormData, 
+  Shepherd, ShepherdFormData, 
+  FarmWorker, FarmWorkerFormData,
+  Vet, VetFormData,
+  CropMedicine, CropMedicineFormData,
+  View 
+} from './types';
+import { INITIAL_SHEPHERDS, INITIAL_FARM_WORKERS, INITIAL_VETS, INITIAL_CROP_MEDICINES } from './constants';
 
 import Header from './components/Header';
 import Dashboard from './components/Dashboard';
@@ -9,11 +18,16 @@ import Recommendations from './components/Recommendations';
 import Financials from './components/Financials';
 import Shepherds from './components/Shepherds';
 import FarmWorkers from './components/FarmWorkers';
+import Vets from './components/Vets';
+import CropMedicines from './components/CropMedicines';
 import AddAnimalModal from './components/AddAnimalModal';
 import AddCropModal from './components/AddCropModal';
 import AddExpenseModal from './components/AddExpenseModal';
 import AddShepherdModal from './components/AddShepherdModal';
 import AddFarmWorkerModal from './components/AddFarmWorkerModal';
+import AddVetModal from './components/AddVetModal';
+import AddCropMedicineModal from './components/AddCropMedicineModal';
+
 
 function App() {
   const [view, setView] = useState<View>('dashboard');
@@ -24,6 +38,9 @@ function App() {
   const [expenses, setExpenses] = useLocalStorage<Expense[]>('expenses', []);
   const [shepherds, setShepherds] = useLocalStorage<Shepherd[]>('shepherds', INITIAL_SHEPHERDS);
   const [farmWorkers, setFarmWorkers] = useLocalStorage<FarmWorker[]>('farmWorkers', INITIAL_FARM_WORKERS);
+  const [vets, setVets] = useLocalStorage<Vet[]>('vets', INITIAL_VETS);
+  const [cropMedicines, setCropMedicines] = useLocalStorage<CropMedicine[]>('cropMedicines', INITIAL_CROP_MEDICINES);
+
 
   // Modal visibility state
   const [isAnimalModalOpen, setIsAnimalModalOpen] = useState(false);
@@ -31,6 +48,8 @@ function App() {
   const [isExpenseModalOpen, setIsExpenseModalOpen] = useState(false);
   const [isShepherdModalOpen, setIsShepherdModalOpen] = useState(false);
   const [isFarmWorkerModalOpen, setIsFarmWorkerModalOpen] = useState(false);
+  const [isVetModalOpen, setIsVetModalOpen] = useState(false);
+  const [isCropMedicineModalOpen, setIsCropMedicineModalOpen] = useState(false);
 
   // State for editing items
   const [editingAnimal, setEditingAnimal] = useState<Animal | null>(null);
@@ -38,6 +57,8 @@ function App() {
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
   const [editingShepherd, setEditingShepherd] = useState<Shepherd | null>(null);
   const [editingFarmWorker, setEditingFarmWorker] = useState<FarmWorker | null>(null);
+  const [editingVet, setEditingVet] = useState<Vet | null>(null);
+  const [editingCropMedicine, setEditingCropMedicine] = useState<CropMedicine | null>(null);
 
   // Handlers for Animals
   const handleAddAnimal = () => { setEditingAnimal(null); setIsAnimalModalOpen(true); };
@@ -84,6 +105,24 @@ function App() {
     setIsFarmWorkerModalOpen(false);
   };
 
+  // Handlers for Vets
+  const handleAddVet = () => { setEditingVet(null); setIsVetModalOpen(true); };
+  const handleEditVet = (vet: Vet) => { setEditingVet(vet); setIsVetModalOpen(true); };
+  const handleDeleteVet = (id: number) => { if (window.confirm('هل أنت متأكد؟')) setVets(prev => prev.filter(v => v.id !== id)); };
+  const handleSaveVet = (data: VetFormData) => {
+    setVets(prev => editingVet ? prev.map(v => v.id === editingVet.id ? { ...data, id: v.id } : v) : [...prev, { ...data, id: Date.now() }]);
+    setIsVetModalOpen(false);
+  };
+
+  // Handlers for Crop Medicines
+  const handleAddCropMedicine = () => { setEditingCropMedicine(null); setIsCropMedicineModalOpen(true); };
+  const handleEditCropMedicine = (medicine: CropMedicine) => { setEditingCropMedicine(medicine); setIsCropMedicineModalOpen(true); };
+  const handleDeleteCropMedicine = (id: number) => { if (window.confirm('هل أنت متأكد؟')) setCropMedicines(prev => prev.filter(m => m.id !== id)); };
+  const handleSaveCropMedicine = (data: CropMedicineFormData) => {
+    setCropMedicines(prev => editingCropMedicine ? prev.map(m => m.id === editingCropMedicine.id ? { ...data, id: m.id } : m) : [...prev, { ...data, id: Date.now() }]);
+    setIsCropMedicineModalOpen(false);
+  };
+
   const renderView = () => {
     switch (view) {
       case 'dashboard':
@@ -96,6 +135,10 @@ function App() {
         return <Shepherds shepherds={shepherds} onAdd={handleAddShepherd} onEdit={handleEditShepherd} onDelete={handleDeleteShepherd} />;
       case 'farmWorkers':
         return <FarmWorkers farmWorkers={farmWorkers} onAdd={handleAddFarmWorker} onEdit={handleEditFarmWorker} onDelete={handleDeleteFarmWorker} />;
+      case 'vets':
+        return <Vets vets={vets} onAdd={handleAddVet} onEdit={handleEditVet} onDelete={handleDeleteVet} />;
+      case 'cropMedicines':
+        return <CropMedicines cropMedicines={cropMedicines} onAdd={handleAddCropMedicine} onEdit={handleEditCropMedicine} onDelete={handleDeleteCropMedicine} />;
       default:
         return <Dashboard animals={animals} crops={crops} onAddAnimal={handleAddAnimal} onEditAnimal={handleEditAnimal} onDeleteAnimal={handleDeleteAnimal} onAddCrop={handleAddCrop} onEditCrop={handleEditCrop} onDeleteCrop={handleDeleteCrop} />;
     }
@@ -113,6 +156,8 @@ function App() {
       <AddExpenseModal isOpen={isExpenseModalOpen} onClose={() => setIsExpenseModalOpen(false)} onSave={handleSaveExpense} expense={editingExpense} />
       <AddShepherdModal isOpen={isShepherdModalOpen} onClose={() => setIsShepherdModalOpen(false)} onSave={handleSaveShepherd} shepherd={editingShepherd} />
       <AddFarmWorkerModal isOpen={isFarmWorkerModalOpen} onClose={() => setIsFarmWorkerModalOpen(false)} onSave={handleSaveFarmWorker} worker={editingFarmWorker} />
+      <AddVetModal isOpen={isVetModalOpen} onClose={() => setIsVetModalOpen(false)} onSave={handleSaveVet} vet={editingVet} />
+      <AddCropMedicineModal isOpen={isCropMedicineModalOpen} onClose={() => setIsCropMedicineModalOpen(false)} onSave={handleSaveCropMedicine} medicine={editingCropMedicine} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from '../types';
-import { DashboardIcon, MoneyIcon, ShepherdIcon, WorkerIcon, LightbulbIcon } from './Icons';
+import { DashboardIcon, MoneyIcon, ShepherdIcon, WorkerIcon, LightbulbIcon, VetIcon, MedicineIcon } from './Icons';
 
 interface HeaderProps {
   currentView: View;
@@ -34,15 +34,17 @@ const Header: React.FC<HeaderProps> = ({ currentView, onNavigate }) => {
   return (
     <header className="bg-brand-green-dark text-white p-4 shadow-md sticky top-0 z-40">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
-        <div className="mb-4 sm:mb-0">
+        <div className="mb-4 sm:mb-0 text-center sm:text-right">
             <h1 className="text-2xl font-bold">الراعي الذكي</h1>
             <p className="text-xs text-brand-yellow hidden md:block">إدارة مزرعتك بكفاءة وذكاء</p>
         </div>
-        <nav className="flex flex-wrap justify-center gap-2 sm:gap-4">
-          <NavItem view="dashboard" currentView={currentView} onNavigate={onNavigate} icon={<DashboardIcon />} label="لوحة التحكم" />
+        <nav className="flex flex-wrap justify-center gap-1 sm:gap-2">
+          <NavItem view="dashboard" currentView={currentView} onNavigate={onNavigate} icon={<DashboardIcon />} label="الرئيسية" />
           <NavItem view="expenses" currentView={currentView} onNavigate={onNavigate} icon={<MoneyIcon />} label="المصاريف" />
           <NavItem view="shepherds" currentView={currentView} onNavigate={onNavigate} icon={<ShepherdIcon />} label="الرعاة" />
           <NavItem view="farmWorkers" currentView={currentView} onNavigate={onNavigate} icon={<WorkerIcon />} label="العمال" />
+          <NavItem view="vets" currentView={currentView} onNavigate={onNavigate} icon={<VetIcon />} label="البيطريون" />
+          <NavItem view="cropMedicines" currentView={currentView} onNavigate={onNavigate} icon={<MedicineIcon />} label="أدوية المحاصيل" />
           <NavItem view="recommendations" currentView={currentView} onNavigate={onNavigate} icon={<LightbulbIcon />} label="التوصيات" />
         </nav>
       </div>

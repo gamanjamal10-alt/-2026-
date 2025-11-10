@@ -1,29 +1,42 @@
 import React from 'react';
 
-export enum AnimalType {
-  Cow = 'بقرة',
-  // --- Sheep (غنم) ---
-  Ewe = 'نعجة',         // أنثى الخروف البالغة
-  Ram = 'كبش',          // ذكر الخروف البالغ
-  Alloush = 'علوش',     // خروف صغير (ذكر)
-  Kharoufa = 'خروفة',    // خروفة صغيرة (أنثى)
-  Jadaa = 'جدعة',       // عمره سنة
-  Thniya = 'ثنية',       // عمرها سنتان (أنثى)
-  Thni = 'ثني',         // عمره سنتان (ذكر)
-  Rubaiyah = 'رباعية',    // عمرها أربع سنوات (أنثى)
-  Rubaee = 'رباع',        // عمره أربع سنوات (ذكر)
-  Sadsah = 'سدسة',      // عمره ست سنوات
-  Wakrif = 'وكريف',      // كبش كبير في السن
-  // --- Goats (ماعز) ---
-  NannyGoat = 'عنزة',     // أنثى الماعز البالغة
-  BillyGoat = 'عتروس',    // ذكر الماعز البالغ
-  Jady = 'جدي',         // جدي صغير (ذكر)
-  Jadyah = 'جدية',      // جدية صغيرة (أنثى)
-  // --- Other ---
-  Chicken = 'دجاجة',
-  Camel = 'جمل',
+// --- Vets ---
+export interface Vet {
+  id: number;
+  name: string;
+  phone: string;
+  specialty: string;
+  notes: string;
+}
+export type VetFormData = Omit<Vet, 'id'>;
+
+// --- Crop Medicines ---
+export enum MedicineType {
+    Pesticide = 'مبيد حشري',
+    Fungicide = 'مبيد فطري',
+    Herbicide = 'مبيد أعشاب',
+    Fertilizer = 'سماد سائل',
+    Other = 'أخرى',
 }
 
+export interface CropMedicine {
+  id: number;
+  name: string;
+  type: MedicineType;
+  quantity: string; // e.g., "5 لتر", "10 كغ"
+  notes: string;
+}
+export type CropMedicineFormData = Omit<CropMedicine, 'id'>;
+
+
+// --- Animals ---
+export enum AnimalType {
+  Sheep = 'غنم',
+  Goat = 'ماعز',
+  Cow = 'بقرة',
+  Chicken = 'دجاج',
+  Camel = 'جمل',
+}
 
 export enum AnimalRole {
   Milk = 'حليب',
@@ -43,6 +56,7 @@ export enum HealthStatus {
 export interface AnimalFormData {
   name: string;
   type: AnimalType;
+  class?: string; // New optional field for local classification
   role: AnimalRole;
   dailyOutput: number;
   healthStatus: HealthStatus;
@@ -54,6 +68,7 @@ export interface Animal extends AnimalFormData {
 }
 
 
+// --- Crops ---
 export enum CropType {
   // Grains / المحاصيل والحبوب
   Wheat = 'قمح',
@@ -103,6 +118,7 @@ export interface Crop extends CropFormData {
   id: number;
 }
 
+// --- Expenses ---
 export enum ExpenseCategory {
   Feed = 'علف',
   Medicine = 'أدوية',
@@ -124,6 +140,7 @@ export interface Expense extends ExpenseFormData {
   id: number;
 }
 
+// --- Staff ---
 export interface Shepherd {
     id: number;
     name: string;
@@ -142,4 +159,5 @@ export interface FarmWorker {
 }
 export type FarmWorkerFormData = Omit<FarmWorker, 'id'>;
 
-export type View = 'dashboard' | 'recommendations' | 'expenses' | 'shepherds' | 'farmWorkers';
+// --- App Navigation ---
+export type View = 'dashboard' | 'recommendations' | 'expenses' | 'shepherds' | 'farmWorkers' | 'vets' | 'cropMedicines';

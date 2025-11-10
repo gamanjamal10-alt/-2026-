@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Animal, HealthStatus } from '../types';
 import { ANIMAL_SOUNDS } from '../constants';
@@ -33,9 +32,14 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, onEdit, onDelete }) => 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:-translate-y-1 flex flex-col">
       <div className="bg-brand-brown text-white p-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-start">
           <h3 className="text-xl font-bold">{animal.name}</h3>
-          <span className="text-sm bg-brand-brown-light px-2 py-1 rounded-full">{animal.type} - {animal.role}</span>
+          <div className="text-right">
+            <span className="text-sm bg-brand-brown-light px-2 py-1 rounded-full whitespace-nowrap">
+              {animal.class ? `${animal.class} (${animal.type})` : animal.type}
+            </span>
+            <span className="block text-xs mt-1 text-yellow-300">{animal.role}</span>
+          </div>
         </div>
       </div>
       <div className="p-4 space-y-3 flex-grow">

@@ -79,3 +79,18 @@ export const WorkerIcon: React.FC = () => (
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
     </svg>
 );
+
+export const VetIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 8v.01M12 12v.01M16 16v.01M12 22a10 10 0 110-20 10 10 0 010 20zM12 8a.5.5 0 100-1 .5.5 0 000 1zm0 4a.5.5 0 100-1 .5.5 0 000 1zm0 4a.5.5 0 100-1 .5.5 0 000 1zM12 2a10 10 0 00-7.07 17.07A10 10 0 1019.07 4.93 9.932 9.932 0 0012 2zm0 18a8 8 0 110-16 8 8 0 010 16z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 12h.01M12 16h.01M12 8h.01M15 12h.01M9 12h.01"/>
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14h4m-2-2v4" />
+    </svg>
+);
+
+export const MedicineIcon: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.69 13.98a9 9 0 11-12.728-12.728 9 9 0 0112.728 12.728zM9 9l6 6m0-6l-6 6" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.12 14.12a5 5 0 10-7.07-7.07 5 5 0 007.07 7.07z" />
+    </svg>
+);
