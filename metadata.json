@@ -1,0 +1,5 @@
+{
+  "name": "الراعي الذكي (Smart Farmer)",
+  "description": "A personal farm management system for individual farmers, focusing on animal and crop management, AI-driven recommendations, financial tracking, and smart alerts. Designed to be simple, private, and usable in rural settings, with an Arabic-first interface.",
+  "requestFramePermissions": []
+}
