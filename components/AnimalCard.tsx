@@ -1,5 +1,4 @@
 import React from 'react';
-import useSound from 'use-sound';
 import { Animal, HealthStatus } from '../types';
 import { ANIMAL_SOUNDS } from '../constants';
 import { SoundIcon, EditIcon, DeleteIcon, HeartIcon, OutputIcon, NoteIcon } from './Icons';
@@ -11,8 +10,14 @@ interface AnimalCardProps {
 }
 
 const AnimalCard: React.FC<AnimalCardProps> = ({ animal, onEdit, onDelete }) => {
-  const soundSrc = ANIMAL_SOUNDS[animal.type];
-  const [playSound] = useSound(soundSrc, { volume: 0.75 });
+  const handlePlaySound = () => {
+    const soundSrc = ANIMAL_SOUNDS[animal.type];
+    if (soundSrc) {
+      const audio = new Audio(soundSrc);
+      audio.volume = 0.75;
+      audio.play().catch(e => console.error("Error playing sound:", e));
+    }
+  };
 
   const getHealthColor = (status: HealthStatus) => {
     switch (status) {
@@ -57,7 +62,7 @@ const AnimalCard: React.FC<AnimalCardProps> = ({ animal, onEdit, onDelete }) => 
         </div>
       </div>
       <div className="p-3 bg-gray-50 border-t flex justify-between items-center">
-        <button onClick={() => playSound()} className="p-2 rounded-full hover:bg-brand-yellow-dark transition-colors" aria-label="تشغيل الصوت">
+        <button onClick={handlePlaySound} className="p-2 rounded-full hover:bg-brand-yellow-dark transition-colors" aria-label="تشغيل الصوت">
             <SoundIcon />
         </button>
         <div className="flex gap-2">
